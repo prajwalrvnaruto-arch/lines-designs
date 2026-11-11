@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { MapPin, ArrowLeft, ArrowRight, Clock3, Ruler, CalendarDays, Maximize2, ZoomIn } from "lucide-react";
+import { MapPin, ArrowLeft, ArrowRight, Clock3, Ruler, CalendarDays, Maximize2, ZoomIn, Play } from "lucide-react";
 import { PROJECTS } from "@/data/projects";
 import { cn, BUSINESS_NAME } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,11 @@ export function ProjectDetail() {
   const next = () => setActive((i) => (i + 1) % project.images.length);
   const prev = () => setActive((i) => (i - 1 + project.images.length) % project.images.length);
 
+  // Poster for video entries: the project's first still image, falling back to a generic frame.
+  const videoPoster =
+    project.images.find((src) => !src.endsWith(".mp4")) ??
+    "/assets/portfolio/arch/plan-to-3d-interior-poster.webp";
+
   const openLightbox = (index: number) => {
     setActive(index);
     setLightboxIndex(index);
@@ -49,17 +54,35 @@ export function ProjectDetail() {
       {/* Detail hero */}
       <section className="relative flex min-h-[64svh] w-full items-end overflow-hidden">
         <AnimatePresence>
-          <motion.img
-            key={active}
-            src={project.images[active]}
-            alt={`${project.title} — image ${active + 1}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-0 h-full w-full object-cover cursor-pointer"
-            onClick={() => openLightbox(active)}
-          />
+          {project.images[active]?.endsWith(".mp4") ? (
+            <motion.video
+              key={active}
+              src={project.images[active]}
+              poster={videoPoster}
+              autoPlay
+              loop
+              muted
+              playsInline
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+              onClick={() => openLightbox(active)}
+            />
+          ) : (
+            <motion.img
+              key={active}
+              src={project.images[active]}
+              alt={`${project.title} — image ${active + 1}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+              onClick={() => openLightbox(active)}
+            />
+          )}
         </AnimatePresence>
         <div 
           className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/25 to-charcoal/10 cursor-pointer pointer-events-none" 
@@ -174,12 +197,26 @@ export function ProjectDetail() {
                         : "border-transparent opacity-80 hover:border-oak/40 hover:opacity-100"
                     )}
                   >
-                    <img
-                      src={src}
-                      alt={`${project.title} photo ${i + 1}`}
-                      loading="lazy"
-                      className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                    />
+                    {src.endsWith(".mp4") ? (
+                      <div className="relative aspect-square w-full bg-charcoal">
+                        <img
+                          src={videoPoster}
+                          alt={`${project.title} video thumbnail ${i + 1}`}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                        />
+                        <span className="absolute bottom-1.5 right-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-charcoal/80 text-ivory">
+                          <Play className="h-2.5 w-2.5 fill-ivory text-ivory" />
+                        </span>
+                      </div>
+                    ) : (
+                      <img
+                        src={src}
+                        alt={`${project.title} photo ${i + 1}`}
+                        loading="lazy"
+                        className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      />
+                    )}
                     <div className="absolute inset-0 flex items-center justify-center bg-charcoal/30 opacity-0 backdrop-blur-[1px] transition-opacity duration-200 group-hover:opacity-100">
                       <ZoomIn className="h-5 w-5 text-ivory drop-shadow-md" />
                     </div>
@@ -207,13 +244,15 @@ export function ProjectDetail() {
                     <dd className="mt-0.5 font-sans text-sm font-medium text-charcoal">{project.location}</dd>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <Ruler className="mt-0.5 h-5 w-5 text-oak-dark" />
-                  <div>
-                    <dt className="font-sans text-[0.68rem] uppercase tracking-[0.18em] text-muted">Area</dt>
-                    <dd className="mt-0.5 font-sans text-sm font-medium text-charcoal">{project.area}</dd>
+                {project.area && (
+                  <div className="flex items-start gap-4">
+                    <Ruler className="mt-0.5 h-5 w-5 text-oak-dark" />
+                    <div>
+                      <dt className="font-sans text-[0.68rem] uppercase tracking-[0.18em] text-muted">Area</dt>
+                      <dd className="mt-0.5 font-sans text-sm font-medium text-charcoal">{project.area}</dd>
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="flex items-start gap-4">
                   <CalendarDays className="mt-0.5 h-5 w-5 text-oak-dark" />
                   <div>

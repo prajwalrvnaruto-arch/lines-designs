@@ -5,17 +5,25 @@ import { SectionHeading } from "@/components/shared/SectionHeading";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { ProjectCard } from "@/components/shared/ProjectCard";
 
+// First id gets the large feature card.
 const FEATURED_IDS = [
-  "contemporary-bengaluru-residence",
-  "japandi-apartment",
-  "contemporary-villa",
-  "boutique-office",
+  "pavilion-farm-cottage",
+  "contemporary-duplex-villa",
+  "mango-orchard-farmhouse",
+  "exposed-brick-farmhouse",
 ];
 
+// Card images used only in this section; other pages keep each project's default cover.
+const COVER_OVERRIDES: Record<string, string> = {
+  "contemporary-duplex-villa": "/assets/deliveries/contemporary-duplex-villa/01-exterior.webp",
+};
+
 export function FeaturedProjects() {
-  const featured = FEATURED_IDS.map(
-    (id) => PROJECTS.find((p) => p.id === id)!
-  );
+  const featured = FEATURED_IDS.map((id) => {
+    const project = PROJECTS.find((p) => p.id === id)!;
+    const cover = COVER_OVERRIDES[id];
+    return cover ? { ...project, cover } : project;
+  });
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">

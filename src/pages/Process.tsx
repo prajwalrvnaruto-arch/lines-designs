@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { ArrowRight } from "lucide-react";
 
-const TOTAL_DURATION = "6 – 10 weeks";
-
 export function Process() {
   return (
     <>
@@ -55,14 +53,9 @@ export function Process() {
                       <span className="font-serif text-5xl font-light text-travertine">
                         {step.number}
                       </span>
-                      <div>
-                        <h2 className="font-serif text-2xl font-medium text-charcoal sm:text-3xl">
-                          {step.title}
-                        </h2>
-                        <p className="mt-1 font-sans text-[0.7rem] uppercase tracking-[0.18em] text-oak-dark">
-                          {step.timeline}
-                        </p>
-                      </div>
+                      <h2 className="font-serif text-2xl font-medium text-charcoal sm:text-3xl">
+                        {step.title}
+                      </h2>
                     </div>
                     <p className="mt-5 font-sans text-base leading-relaxed text-muted">
                       {step.description}
@@ -73,24 +66,6 @@ export function Process() {
             })}
           </div>
         </div>
-
-        {/* Duration banner */}
-        <AnimatedSection className="mt-16">
-          <div className="flex flex-col items-center gap-3 rounded-3xl border border-charcoal/8 bg-cream px-8 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
-            <div className="flex flex-col gap-1">
-              <p className="font-serif text-2xl font-medium text-charcoal">
-                Typical project duration
-              </p>
-              <p className="font-sans text-sm text-muted">
-                {TOTAL_DURATION} from first consultation to final handover — sized to your
-                scope, and confirmed before we begin.
-              </p>
-            </div>
-            <p className="whitespace-nowrap font-serif text-4xl font-medium text-oak">
-              {TOTAL_DURATION}
-            </p>
-          </div>
-        </AnimatedSection>
       </section>
 
       {/* CTA */}

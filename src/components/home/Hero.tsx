@@ -19,34 +19,40 @@ export function Hero() {
   return (
     <>
       <section className="relative min-h-dvh w-full overflow-hidden">
-        <style>{`
-          @keyframes hero-pan {
-            0%, 100% { transform: scale(1.08) translateX(0); }
-            50%      { transform: scale(1.08) translateX(-2.5%); }
-          }
-          @media (prefers-reduced-motion: no-preference) {
-            .hero-pan { animation: hero-pan 20s ease-in-out infinite; }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .hero-pan { animation: none; }
-          }
-        `}</style>
-        {/* Desktop hero image */}
-        <img
-          src="/assets/hero/hero-desktop.webp"
-          alt="Serene luxury living room with Bengaluru city views"
+        {/* Desktop hero video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/assets/hero/hero-desktop.webp"
           className="absolute inset-0 hidden h-full w-full object-cover object-center sm:block"
-          fetchPriority="high"
-          loading="eager"
-        />
-        {/* Mobile hero image */}
-        <img
-          src="/assets/hero/hero-mobile.webp"
-          alt="Warm minimalist double-height living room"
-          className="hero-pan absolute inset-0 block h-full w-full object-cover object-center sm:hidden"
-          fetchPriority="high"
-          loading="eager"
-        />
+        >
+          <source src="/assets/hero/hero-desktop.mp4" type="video/mp4" />
+          {/* Fallback image */}
+          <img
+            src="/assets/hero/hero-desktop.webp"
+            alt="Serene luxury living room with Bengaluru city views"
+            className="h-full w-full object-cover object-center"
+          />
+        </video>
+        {/* Mobile hero video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/assets/hero/hero-mobile.webp"
+          className="absolute inset-0 block h-full w-full object-cover object-center sm:hidden"
+        >
+          <source src="/assets/hero/hero-mobile.mp4" type="video/mp4" />
+          {/* Fallback image */}
+          <img
+            src="/assets/hero/hero-mobile.webp"
+            alt="Warm minimalist double-height living room"
+            className="h-full w-full object-cover object-center"
+          />
+        </video>
 
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/75 via-charcoal/25 to-charcoal/10" />
 

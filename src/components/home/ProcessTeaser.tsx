@@ -46,9 +46,6 @@ export function ProcessTeaser() {
                 <p className="mt-2 text-center font-sans text-sm text-muted leading-relaxed">
                   {step.short}
                 </p>
-                <p className="mt-2 text-center font-sans text-[0.7rem] uppercase tracking-[0.15em] text-oak">
-                  {step.timeline}
-                </p>
               </li>
             </AnimatedSection>
           );

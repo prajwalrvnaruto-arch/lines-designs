@@ -6,26 +6,41 @@ interface PageHeroProps {
   title: ReactNode;
   description?: string;
   image?: string;
+  /** Optional background video; `image` is used as its poster while it loads. */
+  video?: string;
   compact?: boolean;
 }
 
-export function PageHero({ eyebrow, title, description, image, compact = false }: PageHeroProps) {
-  const onImage = Boolean(image);
+export function PageHero({ eyebrow, title, description, image, video, compact = false }: PageHeroProps) {
+  const onImage = Boolean(image || video);
   return (
     <section
       className={`relative flex w-full overflow-hidden items-end ${
         onImage ? (compact ? "min-h-[42svh]" : "min-h-[56svh]") : "pt-36"
       }`}
     >
-      {image && (
+      {onImage && (
         <>
-          <img
-            src={image}
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover"
-            loading="eager"
-          />
+          {video ? (
+            <video
+              src={video}
+              poster={image}
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <img
+              src={image}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="eager"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal/75 via-charcoal/30 to-charcoal/10" />
         </>
       )}

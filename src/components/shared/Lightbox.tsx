@@ -77,18 +77,35 @@ export function Lightbox({
             </button>
           </div>
 
-          {/* Main Image */}
-          <motion.img
-            key={index}
-            src={images[index]}
-            alt={title ? `${title} — image ${index + 1}` : `Project image ${index + 1} of ${images.length}`}
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
-            onClick={(e) => e.stopPropagation()}
-            className="max-h-[82vh] max-w-[92vw] rounded-2xl object-contain shadow-2xl"
-            draggable={false}
-          />
+          {/* Main Media */}
+          {images[index]?.endsWith(".mp4") ? (
+            <motion.video
+              key={index}
+              src={images[index]}
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[82vh] max-w-[92vw] rounded-2xl object-contain shadow-2xl"
+            />
+          ) : (
+            <motion.img
+              key={index}
+              src={images[index]}
+              alt={title ? `${title} — image ${index + 1}` : `Project image ${index + 1} of ${images.length}`}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[82vh] max-w-[92vw] rounded-2xl object-contain shadow-2xl"
+              draggable={false}
+            />
+          )}
 
           {/* Navigation Controls & Counter */}
           {images.length > 1 && (

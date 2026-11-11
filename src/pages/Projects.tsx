@@ -9,39 +9,14 @@ import { ArchVisualsShowcase } from "@/components/projects/ArchVisualsShowcase";
 import { Lightbox } from "@/components/shared/Lightbox";
 import { cn } from "@/lib/utils";
 
+import { RECENT_DELIVERY_IMAGES } from "@/data/deliveries";
+
 const FILTERS = ["All", "Residential", "Farmhouse", "Commercial", "Apartment"] as const;
 type Filter = (typeof FILTERS)[number];
 
-// Gallery images for the completed-projects masonry section.
-const COMPLETED_IMAGES = [
-  "/assets/portfolio/project01-lux-living.webp",
-  "/assets/portfolio/project01-living.webp",
-  "/assets/portfolio/project01-kitchen.webp",
-  "/assets/portfolio/project01-bedroom.webp",
-  "/assets/portfolio/project01-console.webp",
-  "/assets/portfolio/project02-living.webp",
-  "/assets/portfolio/project02-dining.webp",
-  "/assets/portfolio/project02-kitchen.webp",
-  "/assets/portfolio/project02-bedroom.webp",
-  "/assets/portfolio/project03-villa.webp",
-  "/assets/portfolio/project03-sunlit.webp",
-  "/assets/portfolio/project03-dining.webp",
-  "/assets/portfolio/project04-reception.webp",
-  "/assets/portfolio/project04-office.webp",
-  "/assets/portfolio/project04-conference.webp",
-  "/assets/services/architecture.webp",
-  "/assets/services/residential.webp",
-  "/assets/services/commercial.webp",
-  "/assets/services/kitchen.webp",
-  "/assets/services/bedroom.webp",
-  "/assets/services/renovation.webp",
-  "/assets/about/exterior.webp",
-  "/assets/about/studio.webp",
-  "/assets/process/consultation.webp",
-  "/assets/process/design.webp",
-  "/assets/process/execution.webp",
-  "/assets/process/handover.webp",
-];
+// Gallery images for the completed-projects masonry section (Recent deliveries across Karnataka).
+// Videos (project tours) are excluded — this masonry renders every entry as an <img>.
+const COMPLETED_IMAGES = RECENT_DELIVERY_IMAGES.filter((src) => !src.endsWith(".mp4"));
 
 /* ─────────────────────────────────────────────────────────────────── */
 /*  Projects page                                                       */
@@ -114,7 +89,7 @@ export function Projects() {
           </>
         }
         description="A selection of homes, farmhouses and workplaces across Karnataka — each one a different family, a different site, a different story. Filter by type and take a look inside."
-        image="/assets/portfolio/project01-lux-living.webp"
+        image="/assets/deliveries/contemporary-duplex-villa/11-living.webp"
       />
 
       {/* Filterable grid */}
@@ -191,7 +166,7 @@ export function Projects() {
                     <div className="mt-2 flex items-center justify-between">
                       <p className="flex items-center gap-1.5 font-sans text-xs text-ivory/80">
                         <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                        {project.location} · {project.area}
+                        {project.area ? `${project.location} · ${project.area}` : project.location}
                       </p>
                       <Link
                         to={`/projects/${project.id}`}

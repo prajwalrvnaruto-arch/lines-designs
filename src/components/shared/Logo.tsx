@@ -30,7 +30,7 @@ export function Logo({ className, invert = false, animated = false }: LogoProps)
   ];
 
   const colorClass = invert ? "text-ivory" : "text-charcoal";
-  const ampColorClass = invert ? "text-oak" : "text-oak";
+  const ampColorClass = invert ? "text-ivory" : "text-charcoal";
 
   if (!animated) {
     return (
