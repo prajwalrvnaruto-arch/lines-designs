@@ -1,0 +1,78 @@
+# Cloudflare Pages headers
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+
+# ---------------------------------------------------------------------------
+# Security headers — applied to every route
+# ---------------------------------------------------------------------------
+/*
+  # Force HTTPS for 2 years, including subdomains, and allow HSTS preload.
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  # Block the site from being framed (clickjacking protection).
+  X-Frame-Options: DENY
+  # Stop browsers from MIME-sniffing a response away from the declared type.
+  X-Content-Type-Options: nosniff
+  # Don't leak full URLs to third parties; send origin only on cross-origin.
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Lock down powerful browser features this site doesn't use.
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), interest-cohort=()
+  # Cross-origin isolation hardening.
+  X-DNS-Prefetch-Control: off
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  # Content Security Policy — allowlists only the origins this app actually uses:
+  #   scripts: self only (Vite bundles everything locally)
+  #   styles:  self + inline (Google Fonts CSS + Framer Motion inline styles)
+  #   fonts:   Google Fonts CDN
+  #   images:  self + data: (inlined SVGs/placeholders)
+  #   connect: self + Web3Forms API (contact form submission)
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+
+# ---------------------------------------------------------------------------
+# Caching
+#
+# Two kinds of files live under /assets:
+#   1. Vite's fingerprinted JS/CSS (e.g. /assets/index-CcyIqP6K.js) — the
+#      filename changes on every build, so they are safe to cache forever.
+#   2. Static media in named subfolders (/assets/portfolio/, /assets/about/…)
+#      with STABLE names — these must revalidate so updated images appear.
+#
+# Cloudflare _headers applies the LAST matching rule, so the specific media
+# folders below override the broad /assets/* rule for images.
+# ---------------------------------------------------------------------------
+
+# Fingerprinted build output — immutable, cache for a year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Stable-named media: cache for a day at the browser, let the CDN hold it
+# longer but revalidate, so a redeployed image is picked up quickly.
+/assets/portfolio/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/about/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/deliveries/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/hero/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/services/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/process/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/contact/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/completed/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/dummy_assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/recent_/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/assets/brand/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# ---------------------------------------------------------------------------
+# HTML must always revalidate so new deploys are picked up immediately
+# ---------------------------------------------------------------------------
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate

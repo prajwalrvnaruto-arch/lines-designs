@@ -1,0 +1,8 @@
+# Cloudflare Pages project configuration
+# Docs: https://developers.cloudflare.com/pages/configuration/
+
+name = "lines-and-designs"
+compatibility_date = "2026-11-11"
+
+# Directory Cloudflare Pages serves after the build step.
+pages_build_output_dir = "dist"
