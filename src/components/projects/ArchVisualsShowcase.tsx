@@ -1,10 +1,11 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye } from "lucide-react";
+import { Eye, Play } from "lucide-react";
 
 export interface ArchVisualItem {
   id: string;
   src: string;
+  poster?: string;
   title: string;
   category: "Residential" | "Commercial" | "Apartment" | "Farmhouse";
   type: "Isometric" | "Floor Plan" | "Real Architecture";
@@ -16,7 +17,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   // Farmhouse
   {
     id: "farmhouse-real-luxury",
-    src: "/assets/portfolio/arch/farmhouse-real-luxury.jpg",
+    src: "/assets/portfolio/arch/farmhouse-real-luxury.webp",
     title: "Modern Luxury Farmhouse",
     category: "Farmhouse",
     type: "Real Architecture",
@@ -25,7 +26,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   },
   {
     id: "farmhouse-isometric",
-    src: "/assets/portfolio/arch/isometric-farmhouse.jpg",
+    src: "/assets/portfolio/arch/isometric-farmhouse.webp",
     title: "Farmhouse Villa Cutaway",
     category: "Farmhouse",
     type: "Isometric",
@@ -34,7 +35,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   },
   {
     id: "farmhouse-site-plan",
-    src: "/assets/portfolio/arch/plan-farmhouse-site.jpg",
+    src: "/assets/portfolio/arch/plan-farmhouse-site.webp",
     title: "Estate Master Site Plan",
     category: "Farmhouse",
     type: "Floor Plan",
@@ -43,7 +44,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   },
   {
     id: "farmhouse-real-courtyard",
-    src: "/assets/portfolio/arch/farmhouse-real-courtyard.jpg",
+    src: "/assets/portfolio/arch/farmhouse-real-courtyard.webp",
     title: "Courtyard Verandah & Water Body",
     category: "Farmhouse",
     type: "Real Architecture",
@@ -54,7 +55,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   // Commercial
   {
     id: "commercial-cad-plan",
-    src: "/assets/portfolio/arch/plan-commercial-cad.jpg",
+    src: "/assets/portfolio/arch/plan-commercial-cad.webp",
     title: "Corporate Office CAD Blueprint",
     category: "Commercial",
     type: "Floor Plan",
@@ -63,7 +64,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   },
   {
     id: "commercial-isometric",
-    src: "/assets/portfolio/arch/isometric-office.jpg",
+    src: "/assets/portfolio/arch/isometric-office.webp",
     title: "Creative Workspace Cutaway",
     category: "Commercial",
     type: "Isometric",
@@ -72,7 +73,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   },
   {
     id: "commercial-facade",
-    src: "/assets/portfolio/arch/commercial-office.jpg",
+    src: "/assets/portfolio/arch/commercial-office.webp",
     title: "Tech Campus Architecture",
     category: "Commercial",
     type: "Real Architecture",
@@ -83,16 +84,17 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   // Apartment
   {
     id: "apartment-3d-plan",
-    src: "/assets/portfolio/arch/floor-plan-3d.jpg",
-    title: "Apartment 3D Floor Plan",
+    src: "/assets/portfolio/arch/plan-to-3d-interior.mp4",
+    poster: "/assets/portfolio/arch/plan-to-3d-interior-poster.webp",
+    title: "Apartment Plan to 3D Interior Representation",
     category: "Apartment",
     type: "Floor Plan",
-    badge: "3D Spatial Layout",
-    description: "Furnished top-down cutaway layout detailing master suite, ensuite baths and open living.",
+    badge: "2D Plan to 3D Interior",
+    description: "Architectural CAD floor plan transitioning into photorealistic 3D interior design & spatial layout.",
   },
   {
     id: "apartment-isometric",
-    src: "/assets/portfolio/arch/isometric-apartment.jpg",
+    src: "/assets/portfolio/arch/isometric-apartment.webp",
     title: "Duplex Penthouse Cutaway",
     category: "Apartment",
     type: "Isometric",
@@ -103,7 +105,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   // Residential
   {
     id: "residential-2d-plan",
-    src: "/assets/portfolio/arch/plan-2d.jpg",
+    src: "/assets/portfolio/arch/plan-2d.webp",
     title: "Residential Working Blueprint",
     category: "Residential",
     type: "Floor Plan",
@@ -112,7 +114,7 @@ export const ARCH_VISUALS: ArchVisualItem[] = [
   },
   {
     id: "residential-isometric",
-    src: "/assets/portfolio/arch/isometric-villa.jpg",
+    src: "/assets/portfolio/arch/isometric-villa.webp",
     title: "Contemporary Villa Cutaway",
     category: "Residential",
     type: "Isometric",
@@ -220,12 +222,30 @@ export function ArchVisualsShowcase({ openLightbox }: ArchVisualsShowcaseProps) 
                 className="relative block w-full overflow-hidden bg-sand/40 text-left"
                 aria-label={`Open larger view of ${item.title}`}
               >
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  loading="lazy"
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+                {item.src.endsWith(".mp4") ? (
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-charcoal">
+                    <video
+                      src={item.src}
+                      poster={item.poster}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    <span className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-charcoal/80 px-2.5 py-1 text-[0.65rem] font-medium text-ivory backdrop-blur-sm">
+                      <Play className="h-2.5 w-2.5 fill-ivory text-ivory" />
+                      3D Video
+                    </span>
+                  </div>
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    loading="lazy"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                )}
 
                 {/* Overlay hover badge */}
                 <div className="absolute inset-0 flex items-center justify-center bg-charcoal/30 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
